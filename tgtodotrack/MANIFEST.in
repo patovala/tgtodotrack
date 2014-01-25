@@ -1,0 +1,4 @@
+recursive-include tgtodotrack/public *
+include tgtodotrack/public/favicon.ico
+recursive-include tgtodotrack/i18n *
+recursive-include tgtodotrack/templates *

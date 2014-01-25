@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude" lang='es'>
+    <!-- PV Step11 - heredar del master genshi es un motor con herencia -->
+    <xi:include href="actividades/master.html" />
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
+        <!-- RZ Step13 ajustar el template child para que pueda importar sus componentes -->
+        <link rel="stylesheet" type="text/css" href="/css/component.css"/>
+        <link rel="stylesheet" type="text/css" href="/css/tgtodotrack.css"/>
+        <link rel="stylesheet" type="text/css" href="/css/ui-lightness/jquery-ui-1.10.4.custom.min.css"/>
+        <script src="/javascript/modernizr.custom.js"></script>
+    </head>
+
+    <body>
+        <div class="container">	
+            <div id="bl-main" class="bl-main">
+                <section>
+                <div class="bl-box">
+                    <py:with vars="flash=tg.flash_obj.render('flash', use_js=False)">
+                        <div py:if="flash" py:replace="Markup(flash)" />
+                        <span py:if="request.identity"><a href="/logout_handler">Salir</a></span>
+
+                    </py:with>
+                </div>
+                <div class="bl-content">
+                    <h2>Actividades de Hoy ${fecha.strftime("%d/%m/%Y")}</h2>
+                    <div class="datagrid">
+                        <table py:if="len(actividades)">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        usuario
+                                    </th>
+                                    <th>
+                                        actividad
+                                    </th>
+                                    <th>
+                                        data
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr py:for="actividad in actividades">
+                                    <td>
+                                        ${actividad.usuario.user_name} 
+                                    </td>
+                                    <td>
+                                        ${actividad.actividad}
+                                    </td>
+                                    <td>
+                                        ${actividad.data}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="" py:if="not len(actividades)">No existen actividades para hoy</div>
+                    </div>
+                </div>
+                <span class="bl-icon bl-icon-close"></span>
+                </section>
+                <section id="bl-work-section">
+                <div class="bl-box">
+                    <p class="bl-icon icon-calendar">Mis Actividades</p>
+                </div>
+                <div class="bl-content">
+                    <h2>Mis Actividades</h2>
+                    <p>actividades creadas</p>
+
+                    <div class="datagrid2">
+                        <table py:if="len(misactividades)">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        fecha
+                                    </th>
+                                    <th>
+                                        actividad
+                                    </th>
+                                    <th>
+                                        data
+                                    </th>
+                                    <th>
+                                        publico
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr py:for="actividad in misactividades">
+                                    <td>
+                                        ${actividad.fecha.strftime("%d/%m/%Y")} 
+                                    </td>
+                                    <td>
+                                        ${actividad.actividad}
+                                    </td>
+                                    <td>
+                                        ${actividad.data}
+                                    </td>
+                                    <td>
+                                        ${actividad.public}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="" py:if="not len(actividades)">No existen actividades para hoy</div>
+                    </div>
+                </div>
+                <span class="bl-icon bl-icon-close"></span>
+                </section>
+                <section>
+                <div class="bl-box">
+                    <p class="bl-icon icon-list">Nueva Actividad</p>
+                </div>
+                <div class="bl-content">
+                    <h2>Nueva Actividad</h2>
+                    <form id="actividadForm" action="/actividades/crear_actividad" method="POST">
+                    <table border="0" cellspacing="0" cellpadding="2">
+                        <tr id="actividad.container" class="even" title="">
+                            <td class="labelcol">
+                                <label id="actividad.label" for="actividad" class="fieldlabel required">Actividad</label>
+                            </td>
+                            <td class="fieldcol">
+                                <input type="text" name="actividad" class="textfield required" id="actividad" value="" />
+                            </td>
+                        </tr>
+                        <tr id="data.container" class="odd" title="">
+                            <td class="labelcol">
+                                <label id="data.label" for="data" class="fieldlabel required">Data</label>
+                            </td>
+                            <td class="fieldcol">
+                                <textarea name="data" class="data required" id="data" cols="80" rows="10"></textarea>
+                            </td>
+                        </tr>
+                        <tr id="fecha.container" class="even" title="">
+                            <td class="labelcol">
+                                <label id="fecha.label" for="fecha" class="fieldlabel">Fecha</label>
+                            </td>
+                            <td class="fieldcol">
+                                <input type="text" name="fecha" class="textfield" id="datepicker" value="" />
+                            </td>
+                        </tr>
+                        <tr id="groups.container" class="odd" title="">
+                            <td class="labelcol">
+                                <label id="groups.label" for="groups" class="fieldlabel">Es público?</label>
+                            </td>
+                            <td class="fieldcol">
+                                <input type="radio" name="public" value="si" checked="checked"/> Si
+                                <input type="radio" name="public" value="no"/> No
+                            </td>
+                        </tr>
+                        <tr id="submit.container" class="even" title="">
+                            <td class="labelcol">
+                            </td>
+                            <td class="fieldcol">
+                                <input type="submit" class="submitbutton" value="Crear Actividad" />
+                            </td>
+                        </tr>
+                    </table>
+                    </form>
+                </div>
+                <span class="bl-icon bl-icon-close"></span>
+                </section>
+                <section>
+                <div class="bl-box">
+                    <p class="bl-icon icon-podcast">Acerca de</p>
+                </div>
+                <div class="bl-content">
+                    <h2>Acerca de este demo</h2>
+                    <p>Este demo ha sido creado usando las siguientes herramientas:</p>
+                    <ul>
+                        <li>TurboGears v2.3 <a href="www.turbogears.org">TG2.3</a></li>
+                        <li>HTML5 con templates de <a href=""></a></li>
+                        <li><a href="www.iconmoon.com">IconMoon</a> fonts e íconos</li>
+                        <li><a href="www.jquery.org">JQuery</a> varias librerías</li>
+                        <li><a href="http://jqueryui.com">JQueryUI</a></li>
+                    </ul>
+                    <p>espero que les haya gustado</p>
+                </div>
+                <span class="bl-icon bl-icon-close"></span>
+                </section>
+            </div>
+        </div><!-- /container -->
+        <!-- PV Step14 - Importante, usamos jQuery, ajustar el jquery a la estructura de directorios que estamos armanado 
+            Y vamos a necesitar poner validación usando jquery
+        -->
+        <script src="/javascript/jquery.min.js"></script>
+        <script src="/javascript/boxlayout.js"></script>
+        <script src="/javascript/jquery.validate.min.js"></script>
+        <script src="/javascript/messages_es.js"></script>
+        <script src="/javascript/jquery-ui-1.10.4.custom.min.js"></script>
+        <script>
+            $(function() {
+                Boxlayout.init();
+                // validate the comment form when it is submitted
+                $("#actividadForm").validate();
+
+                $( "#datepicker" ).datepicker({
+			inline: true
+		});
+            });
+        </script>
+    </body>
+</html>
