@@ -42,7 +42,7 @@ class Actividades(BaseController):
         user = DBSession.query(User).filter_by(user_name=user_name).first()
 
         if (kw['fecha'] != ""):
-            fecha = datetime.strptime(kw['fecha'], '%d/%m/%Y')
+            fecha = datetime.strptime(kw['fecha'], '%m/%d/%Y')
         else:
             fecha = None
 
