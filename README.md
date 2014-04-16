@@ -15,3 +15,5 @@ Things to do:
 - Iniciación al controlador actividadades.py
 - Una demostración del AdminController
 - template master.html 
+
+- Probando hacking
